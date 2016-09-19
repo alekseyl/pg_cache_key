@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = %q{collection_cache_key replacement for system which uses PG as DB }
   spec.description   = %q{collection_cache_key replacement for system which uses PG as DB, uses PG aggregation functions }
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.homepage      = "https://github.com/alekseyl/pg_cache_key"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
