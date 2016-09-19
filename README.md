@@ -44,7 +44,7 @@ with includes: 10 items in collection ~ x3.6 faster, 20 ~ x4, 50 ~ x5.6, 1000 ~ 
 
 Of course this is not the numbers for whole page rendering, but it's noticeable. 
 
-On of my real page goes from 0.8+ sec, for largest available pagination, to 0.6 sec per page 
+One of my real page goes from 0.8+ sec, for largest available pagination, to 0.6 sec per page 
 
 To get your numbers try it yourself!
 
