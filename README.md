@@ -10,9 +10,10 @@ It respects all aspects of collection properties including order, limits, offset
 Also comparing to rails 5 solution for collection cache key this one will not need to throw away all sub-collection caches 
 when any elements of the whole collection updates. 
 
+Rem: mention my solution in https://github.com/rails/rails/issues/26330 
 
 # Benchmark
-the numbers I personaly get while comparing with rails 4.2 implementation of cache_key are:
+the numbers I personally get while comparing with rails 4.2 implementation of cache_key are:
  
 Complex model
 without includes: 10 items in collection ~ x1.3 faster, 20 ~ 1.55, 50 ~ x2, 1000 ~ x15
