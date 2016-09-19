@@ -16,9 +16,13 @@ the numbers I personaly get while comparing with rails 4.2 implementation of cac
  
 Complex model
 without includes: 10 items in collection ~ x1.3 faster, 20 ~ 1.55, 50 ~ x2, 1000 ~ x15
+
 with includes:  10 items in collection ~ x5+ faster, 20 ~ x5-6+, 50 ~ x8.5, 1000 ~ x35
+
 less complex model:
+
 without includes: 10 items in collection ~ x1.2 faster, 20 ~ x1.25, 50 ~ x1.5, 1000 ~ x7.4
+
 with includes: 10 items in collection ~ x3.6 faster, 20 ~ x4, 50 ~ x5.6, 1000 ~ x32
 
 Of course this is not the numbers for whole page rendering, but it's noticeable. 
