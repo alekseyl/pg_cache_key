@@ -15,18 +15,21 @@ require "pg_cache_key/version"
 #   end
 # end
 
-# in rails 4 it would go like this:
+# in rails >= 4 it would go like this:
 module ActiveRecord
   # = Active Record \Relation
   class Relation
     def cache_key(timestamp_column = :updated_at)
       cache_columns = [timestamp_column, :id]
       @cache_keys ||= {}
+
       # Rem 1: why use connection.execute instead of doing collection.select because of an order. if you using some order on your scope
       # then columns you using to order must appear in the GROUP BY clause or be used in an aggregate function or you will get an error
       # Rem 2: we need to add select( cache_columns ) explicitly because if relation has includes it might transform columns to aliases
+      # joins(values[:includes]).unscope(:includes) - we need to move includes to joins to avoid all aliases and so
+      # we can't unscope(:includes) completly because some where can depend on it
       @cache_keys[timestamp_column] ||= connection.execute( "SELECT md5(string_agg( #{cache_columns.map{|fld| "\"t\".\"#{fld}\"::text" }.join('||')}, '') ) as cache_key
-                      FROM (#{ select(cache_columns).try(:to_sql) }) t" )[0]['cache_key']
+                      FROM (#{ joins(values[:includes]).unscope(:includes).select(cache_columns).try(:to_sql) }) t" )[0]['cache_key']
     end
   end
 end
