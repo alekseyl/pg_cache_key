@@ -22,9 +22,9 @@ module ActiveRecord
     def cache_key(timestamp_column = :updated_at)
       cache_columns = [timestamp_column, :id]
       @cache_keys ||= {}
-      # why use connection.execute instead of doing collection.select because of an order. if you using some order on your scope
+      # Rem 1: why use connection.execute instead of doing collection.select because of an order. if you using some order on your scope
       # then columns you using to order must appear in the GROUP BY clause or be used in an aggregate function or you will get an error
-      # we need to add select cache_columns explicitly because if relation has includes it might transform columns to aliases
+      # Rem 2: we need to add select( cache_columns ) explicitly because if relation has includes it might transform columns to aliases
       @cache_keys[timestamp_column] ||= connection.execute( "SELECT md5(string_agg( #{cache_columns.map{|fld| "\"t\".\"#{fld}\"::text" }.join('||')}, '') ) as cache_key
                       FROM (#{ select(cache_columns).try(:to_sql) }) t" )[0]['cache_key']
     end
