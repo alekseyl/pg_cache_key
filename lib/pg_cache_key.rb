@@ -24,6 +24,8 @@ module ActiveRecord
       # Rem 1: why use connection.execute instead of doing collection.select because of an order. if you using some order on your scope
       # then columns you using to order must appear in the GROUP BY clause or be used in an aggregate function or you will get an error
       # Rem 2: we need to add select( cache_columns ) explicitly because if relation has includes it might transform columns to aliases
+      # and we must also select them as uniq-aliase so PG wouldn't be confused
+      # 'cc' means cached column :)
       @cache_keys[timestamp_column] ||= connection.execute(
           "SELECT md5(string_agg( t.cc_#{timestamp_column}||t.cc_id, '') ) as cache_key
                       FROM (#{ select( [timestamp_column, :id].map{|cc| "#{table_name}.#{cc}::text as cc_#{cc}" } ).try(:to_sql) }) t" )[0]['cache_key']
