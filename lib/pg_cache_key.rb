@@ -17,6 +17,11 @@ require "pg_cache_key/version"
 
 module PgCacheKey
   def cache_key_raw_sql( timestamp_column = :updated_at )
+    # Rem 1: why use connection.execute instead of doing collection.select because of an order. if you using some order on your scope
+    # then columns you using to order must appear in the GROUP BY clause or be used in an aggregate function or you will get an error
+    # Rem 2: we need to add select( cache_columns ) explicitly because if relation has includes it might transform columns to aliases
+    # and we must also select them as uniq-aliase so PG wouldn't be confused
+    # 'ckc' means cache key column :)
     "SELECT md5(string_agg( t.ckc_#{timestamp_column}||t.ckc_id, '') ) as cache_key \
 FROM (#{ select( [timestamp_column, :id].map{|ckc| "#{table_name}.#{ckc}::text as ckc_#{ckc}" } ).try(:to_sql) }) t"
   end
@@ -41,11 +46,6 @@ module ActiveRecord
 
     def cache_key(timestamp_column = :updated_at)
       @cache_keys ||= {}
-      # Rem 1: why use connection.execute instead of doing collection.select because of an order. if you using some order on your scope
-      # then columns you using to order must appear in the GROUP BY clause or be used in an aggregate function or you will get an error
-      # Rem 2: we need to add select( cache_columns ) explicitly because if relation has includes it might transform columns to aliases
-      # and we must also select them as uniq-aliase so PG wouldn't be confused
-      # 'ckc' means cache key column :)
       @cache_keys[timestamp_column] ||= connection.execute( cache_key_raw_sql(timestamp_column) )[0]['cache_key']
     end
 
