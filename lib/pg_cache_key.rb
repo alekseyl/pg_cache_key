@@ -22,8 +22,8 @@ module PgCacheKey
     # Rem 2: we need to add select( cache_columns ) explicitly because if relation has includes it might transform columns to aliases
     # and we must also select them as uniq-aliase so PG wouldn't be confused
     # 'ckc' means cache key column :)
-    "SELECT md5(string_agg( t.ckc_#{timestamp_column}||t.ckc_id, '') ) as cache_key \
-FROM (#{ select( [timestamp_column, :id].map{|ckc| "#{table_name}.#{ckc}::text as ckc_#{ckc}" } ).try(:to_sql) }) t"
+    "SELECT md5(string_agg( t.ckc_#{timestamp_column}||t.ckc_id, '') ) as cache_key FROM (#{
+      select( [timestamp_column, :id].map{|ckc| "#{table_name}.#{ckc}::text as ckc_#{ckc}" } ).try(:to_sql) }) t"
   end
 end
 
