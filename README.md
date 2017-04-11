@@ -42,6 +42,22 @@ without includes: 10 items in collection ~ x1.2 faster, 20 ~ x1.25, 50 ~ x1.5, 1
 
 with includes: 10 items in collection ~ x3.6 faster, 20 ~ x4, 50 ~ x5.6, 1000 ~ x32
 
+Benchmark code can look like this:
+
+```ruby
+def cache_key_vs_db_checksum(n, model_or_relation = Request)
+      Benchmark.ips do |bm|
+
+        bm.report(:direct_cache_key_rnd) {  ApplicationController.new.fragment_cache_key( model_or_relation.limit(n).random().old_cache_key ) ; :done }
+        bm.report(:checksummed_cache_key_rnd ) { ApplicationController.new.fragment_cache_key( model_or_relation.limit(n).random().new_cash_key ); :done }
+
+        bm.compare!
+      end
+
+    end
+```
+Rem: since gem replaces cache_key, this code will need some changes to benchmark on your machine 
+
 Of course this is not the numbers for whole page rendering, but it's noticeable. 
 
 One of my real page goes from 0.8+ sec, for largest available pagination, to 0.6 sec per page 
