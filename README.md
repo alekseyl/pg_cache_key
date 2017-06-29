@@ -88,9 +88,12 @@ It works out of the box.
 По идее работает само из коробки, но если будут траблы - пишите.
 
 ## Testing
+rake spec
+
 Tested only query string for simple case. In your project you may test it on more specific query. 
 
 ## Testing(рус)
+rake spec 
 Тестируется только строка запроса для самого простого случая + добавление метода в активрекорд релейшен. 
 Стабильность на сложных запросах специфических для вашего приложения можете добавить в свои тесты.
 

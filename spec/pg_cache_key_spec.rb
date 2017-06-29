@@ -10,6 +10,7 @@ describe PgCacheKey do
   it 'should must add cache_key to relation and generate specific raw_sql' do
     expect( mock_class.all ).to respond_to(:cache_key, :cache_key_raw_sql)
     expect(mock_class.all.cache_key_raw_sql).to eq("SELECT md5(string_agg( t.ckc_updated_at||t.ckc_id, '') ) as cache_key FROM (SELECT pg_cache_key_mock_table.updated_at::text as ckc_updated_at, pg_cache_key_mock_table.id::text as ckc_id FROM \"pg_cache_key_mock_table\") t")
+    expect( mock_class.none.cache_key ).to eq("#{mock_class.none.class.to_s.underscore}/blank")
   end
 
   def build_mock_class
