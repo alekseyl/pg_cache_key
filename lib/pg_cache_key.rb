@@ -33,7 +33,7 @@ module ActiveRecord
       return "#{self.class.to_s.underscore}/blank" if to_sql.blank?
       @cache_keys ||= {}
       @cache_keys[timestamp_column] ||= connection.execute( cache_key_raw_sql(timestamp_column) )[0]['cache_key']
-      @cache_keys[timestamp_column] ||= super
+      @cache_keys[timestamp_column] ||= collection_cache_key
     end
 
   end

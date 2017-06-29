@@ -81,11 +81,11 @@ Or install it yourself as:
     $ gem install pg_cache_key
 
 ## Usage
-It works out of the box. 
+It works out of the box. Plz don't use in on collection greater than 50K your DB will suffer.
 
 ## Как использовать
 
-По идее работает само из коробки, но если будут траблы - пишите.
+По идее работает само из коробки, но если будут траблы - пишите. Не стоит использовать для получаения кеш ключей коллекций больше 50К элементов, БДшка будет мучаться.
 
 ## Testing
 rake spec
