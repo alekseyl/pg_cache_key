@@ -30,9 +30,10 @@ module ActiveRecord
     include PgCacheKey
 
     def cache_key(timestamp_column = :updated_at)
-      return "#{self.class.to_s.underscore}/blank" if blank?
+      return "#{self.class.to_s.underscore}/blank" if to_sql.blank?
       @cache_keys ||= {}
       @cache_keys[timestamp_column] ||= connection.execute( cache_key_raw_sql(timestamp_column) )[0]['cache_key']
+      @cache_keys[timestamp_column] ||= super
     end
 
   end
